@@ -1,0 +1,15 @@
+h1 スレッド一覧
+
+= link_to '新規登録', new_thread1_path, class: 'btn btn-primary'
+
+.mb-3
+table.table.table-hover
+	thead.thead-default
+		tr
+			th= Thread1.human_attribute_name(:name)
+			th= Thread1.human_attribute_name(:created_at)
+		tbody
+			- @thread1.each do |thread1|
+				tr
+				td = thread1.name
+				td = thread1.created_at
