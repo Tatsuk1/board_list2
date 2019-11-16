@@ -8,8 +8,12 @@ table.table.table-hover
 		tr
 			th= Thread1.human_attribute_name(:name)
 			th= Thread1.human_attribute_name(:created_at)
+			th
 		tbody
 			- @thread1.each do |thread1|
 				tr
-				td = thread1.name
-				td = thread1.created_at
+				td= link_to thread1.name, thread1
+				td= thread1.created_at
+				td
+					= link_to '編集', edit_thread1_path(thread1), class: 'btn btn-primary mr-3'
+					= link_to '削除', thread1, method: :delete, data: { confirm: "スレッド「#{thread1.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'

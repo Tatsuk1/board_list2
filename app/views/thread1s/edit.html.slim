@@ -1,2 +1,6 @@
-h1 Thread1s#edit
-p Find me in app/views/thread1s/edit.html.slim
+h1 スレッド編集
+
+.nav.justify-content-end
+  = link_to '一覧', thread1s_path, class: 'nav-link'
+
+= render partial: 'form', locals: {thread1: @thread1}

@@ -4,6 +4,7 @@ class Thread1sController < ApplicationController
   end
 
   def show
+    @thread1 = Thread1.find(params[:id])
   end
 
   def new
@@ -17,6 +18,19 @@ class Thread1sController < ApplicationController
   end
 
   def edit
+    @thread1 = Thread1.find(params[:id])
+  end
+
+  def update
+    thread1 = Thread1.find(params[:id])
+    thread1.update(thread1_params)
+    redirect_to thread1s_url, notice: "スレッド「#{thread1.name}」を更新しました。"
+  end
+
+  def destroy
+    thread1 = Thread1.find(params[:id])
+    thread1.destroy
+    redirect_to thread1s_url, notice: "スレッド「#{thread1.name}」を削除しました。"
   end
 
   private
