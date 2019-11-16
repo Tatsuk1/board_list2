@@ -1,2 +1,24 @@
-h1 Thread1s#show
-p Find me in app/views/thread1s/show.html.slim
+h1 スレッド詳細
+
+.nav.justify-content-end 
+	= link_to '一覧', thread1s_path, class: 'nav-link'
+table.table.table-hover
+	tbody
+		tr
+			th= Thread1.human_attribute_name(:id)
+			td= @thread1.id
+		tr
+			th= Thread1.human_attribute_name(:name)
+			td= @thread1.name
+		tr
+			th= Thread1.human_attribute_name(:description)
+			td= simple_format(h(@thread1.description), {}, santize: false, wrapper_tag:"div")
+		tr
+			th= Thread1.human_attribute_name(:created_at)
+			td= @thread1.created_at
+		tr
+			th= Thread1.human_attribute_name(:updated_at)
+			td= @thread1.updated_at
+
+= link_to '編集', edit_thread1_path, class: 'btn btn-primary mr-3'
+= link_to '削除', @thread1, method: :delete, data: { confirm: "スレッド「#{@thread1.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
