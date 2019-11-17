@@ -5,9 +5,6 @@ h1 スレッド詳細
 table.table.table-hover
 	tbody
 		tr
-			th= Thread1.human_attribute_name(:id)
-			td= @thread1.id
-		tr
 			th= Thread1.human_attribute_name(:name)
 			td= @thread1.name
 		tr
@@ -22,3 +19,19 @@ table.table.table-hover
 
 = link_to '編集', edit_thread1_path, class: 'btn btn-primary mr-3'
 = link_to '削除', @thread1, method: :delete, data: { confirm: "スレッド「#{@thread1.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
+
+br
+br
+h2 コメント一覧
+br
+- @comments.each do |comment|
+	= comment.id
+	= comment.content
+	= comment.created_at
+	= link_to '削除', thread1_comment_path(thread1_id: @thread1, id: comment.id), method: :delete, data: { confirm: "コメントを削除します。よろしいですか？"}, class: 'btn btn-danger'
+	br
+
+= form_with model: [@thread1, @comment], local: true do |f|
+	.form-group
+		= f.text_field :content, class: 'form-control'
+		= f.submit nil, class: 'btn btn-primary'

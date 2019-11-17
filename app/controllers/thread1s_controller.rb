@@ -5,6 +5,8 @@ class Thread1sController < ApplicationController
 
   def show
     @thread1 = Thread1.find(params[:id])
+    @comments = @thread1.comments
+    @comment = Comment.new
   end
 
   def new
