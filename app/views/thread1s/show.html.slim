@@ -1,37 +1,85 @@
-h1 スレッド詳細
+.row
+	.col-10.offset-1
+		h1 スレッド詳細
 
-.nav.justify-content-end 
-	= link_to '一覧', thread1s_path, class: 'nav-link'
-table.table.table-hover
-	tbody
-		tr
-			th= Thread1.human_attribute_name(:name)
-			td= @thread1.name
-		tr
-			th= Thread1.human_attribute_name(:description)
-			td= simple_format(h(@thread1.description), {}, santize: false, wrapper_tag:"div")
-		tr
-			th= Thread1.human_attribute_name(:created_at)
-			td= @thread1.created_at
-		tr
-			th= Thread1.human_attribute_name(:updated_at)
-			td= @thread1.updated_at
+		.nav.justify-content-end 
+			= link_to '一覧', thread1s_path, class: 'nav-link'
+		table.table.table-hover
+			tbody
+				tr
+					th= Thread1.human_attribute_name(:name)
+					td= @thread1.name
+				tr
+					th= Thread1.human_attribute_name(:description)
+					td= simple_format(h(@thread1.description), {}, santize: false, wrapper_tag:"div")
+				tr
+					th= Thread1.human_attribute_name(:created_at)
+					td= @thread1.created_at
+				tr
+					th= Thread1.human_attribute_name(:updated_at)
+					td= @thread1.updated_at
 
-= link_to '編集', edit_thread1_path, class: 'btn btn-primary mr-3'
-= link_to '削除', @thread1, method: :delete, data: { confirm: "スレッド「#{@thread1.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
+		= link_to '編集', edit_thread1_path, class: 'btn btn-primary mr-3'
+		= link_to '削除', @thread1, method: :delete, data: { confirm: "スレッド「#{@thread1.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
 
-br
-br
-h2 コメント一覧
-br
-- @comments.each do |comment|
-	= comment.id
-	= comment.content
-	= comment.created_at
-	= link_to '削除', thread1_comment_path(thread1_id: @thread1, id: comment.id), method: :delete, data: { confirm: "コメントを削除します。よろしいですか？"}, class: 'btn btn-danger'
-	br
+		br
+		br
+		h2 コメント一覧
+		br
+		- @comments.each do |comment|
+			- if comment.reply_comment != nil 
+				p コメント先-----------
+				= @comments.find(comment.reply_comment).id
+				| &nbsp;
+				span )
+				| &nbsp;&nbsp;
+				= @comments.find(comment.reply_comment).content
+				p ----------------------
+				.row
+					.col-4
+						span - - >
+						| &nbsp;&nbsp;
+						= comment.id
+						| &nbsp;
+						span )
+						| &nbsp;&nbsp;
+						= comment.content
+						| &nbsp;&nbsp;
+						= comment.created_at
+					= link_to '削除', thread1_comment_path(thread1_id: @thread1, id: comment.id), method: :delete, data: { confirm: "コメントを削除します。よろしいですか？"}, class: 'btn btn-danger'
+					br
+				= form_with model: [@thread1, @comment], local: true do |f|
+					.form-group.row
+						.col-10
+							= f.text_field :content, class: 'form-control'
+						.col-2	
+							= f.submit '返信', class: 'btn btn-success'	
+						= f.hidden_field :reply_comment, :value => comment.id 
+			- else
+				.row
+					.col-4
+						= comment.id
+						| &nbsp;
+						span )
+						| &nbsp;&nbsp;
+						= comment.content
+						| &nbsp;&nbsp;
+						= comment.created_at
+					= link_to '削除', thread1_comment_path(thread1_id: @thread1, id: comment.id), method: :delete, data: { confirm: "コメントを削除します。よろしいですか？"}, class: 'btn btn-danger'
+					br
+				= form_with model: [@thread1, @comment], local: true do |f|
+					.form-group.row
+						.col-10
+							= f.text_field :content, class: 'form-control'
+						.col-2	
+							= f.submit '返信', class: 'btn btn-success'	
+						= f.hidden_field :reply_comment, :value => comment.id 
 
-= form_with model: [@thread1, @comment], local: true do |f|
-	.form-group
-		= f.text_field :content, class: 'form-control'
-		= f.submit nil, class: 'btn btn-primary'
+			
+
+		= form_with model: [@thread1, @comment], local: true do |f|
+			.form-group.row
+				.col-10
+					= f.text_field :content, class: 'form-control'
+				.col-2
+					= f.submit nil, class: 'btn btn-primary'

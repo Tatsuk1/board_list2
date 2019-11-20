@@ -1,6 +1,8 @@
-h1 スレッド作成
+.row
+	.col-10.offset-1
+			h1 スレッド作成
 
-.nav.justify-content-end
-  = link_to '一覧', thread1s_path, class: 'nav-link'
+			.nav.justify-content-end
+				= link_to '一覧', thread1s_path, class: 'nav-link'
 
-= render partial: 'form', locals: {thread1: @thread1}
+			= render partial: 'form', locals: {thread1: @thread1}

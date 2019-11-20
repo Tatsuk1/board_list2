@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_20_102820) do
+ActiveRecord::Schema.define(version: 2019_11_20_124623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2019_11_20_102820) do
     t.bigint "thread1_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "reply_comment"
     t.index ["thread1_id"], name: "index_comments_on_thread1_id"
   end
 
