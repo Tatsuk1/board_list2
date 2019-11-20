@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_17_052749) do
+ActiveRecord::Schema.define(version: 2019_11_20_102820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,12 +23,21 @@ ActiveRecord::Schema.define(version: 2019_11_17_052749) do
     t.index ["thread1_id"], name: "index_comments_on_thread1_id"
   end
 
+  create_table "replies", force: :cascade do |t|
+    t.bigint "comment_id"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comment_id"], name: "index_replies_on_comment_id"
+  end
+
   create_table "thread1s", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   add_foreign_key "comments", "thread1s"
+  add_foreign_key "replies", "comments"
 end
