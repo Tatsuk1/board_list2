@@ -1,3 +1,9 @@
+- if thread1.errors.present?
+	.alert.alert-danger
+		ul#error_explanation
+			- thread1.errors.full_messages.each do |message|
+				li= message
+
 = form_with model: thread1, local: true do |f|
 	.form-group
 		= f.label :name

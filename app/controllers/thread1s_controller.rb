@@ -14,9 +14,12 @@ class Thread1sController < ApplicationController
   end
 
   def create
-    thread1 = Thread1.new(thread1_params)
-    thread1.save!
-    redirect_to thread1s_url, notice: "スレッド「#(thread1.name)」を登録しました。"
+    @thread1 = Thread1.new(thread1_params)
+    if @thread1.save
+      redirect_to @thread1, notice: "スレッド「#(thread1.name)」を登録しました。"
+    else
+      render :new
+    end
   end
 
   def edit
