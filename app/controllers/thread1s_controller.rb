@@ -1,10 +1,10 @@
 class Thread1sController < ApplicationController
+before_action :set_thread1, only: [:show, :edit, :destroy, :update]
   def index
-    @thread1 = Thread1.all
+    @thread1 = Thread1.all.recent
   end
 
   def show
-    @thread1 = Thread1.find(params[:id])
     @comments = @thread1.comments
     @comment = Comment.new
   end
@@ -14,33 +14,34 @@ class Thread1sController < ApplicationController
   end
 
   def create
-    @thread1 = Thread1.new(thread1_params)
+    @thread1 = current_user.thread1s.new(thread1_params)
     if @thread1.save
-      redirect_to @thread1, notice: "スレッド「#(thread1.name)」を登録しました。"
+      redirect_to @thread1, notice: "スレッド「#{@thread1.name}」を登録しました。"
     else
       render :new
     end
   end
 
   def edit
-    @thread1 = Thread1.find(params[:id])
   end
 
   def update
-    thread1 = Thread1.find(params[:id])
-    thread1.update(thread1_params)
-    redirect_to thread1s_url, notice: "スレッド「#{thread1.name}」を更新しました。"
+    @thread1.update(thread1_params)
+    redirect_to thread1s_url, notice: "スレッド「#{@thread1.name}」を更新しました。"
   end
 
   def destroy
-    thread1 = Thread1.find(params[:id])
-    thread1.destroy
-    redirect_to thread1s_url, notice: "スレッド「#{thread1.name}」を削除しました。"
+    @thread1.destroy
+    redirect_to thread1s_url, notice: "スレッド「#{@thread1.name}」を削除しました。"
   end
 
   private
 
     def thread1_params
       params.require(:thread1).permit(:name, :description)
+    end
+
+    def set_thread1
+      @thread1 = Thread1.find(params[:id])
     end
 end

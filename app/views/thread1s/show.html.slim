@@ -10,17 +10,20 @@
 					th= Thread1.human_attribute_name(:name)
 					td= @thread1.name
 				tr
+					th 作成者
+					td= @thread1.user.name
+				tr
 					th= Thread1.human_attribute_name(:description)
-					td= simple_format(h(@thread1.description), {}, santize: false, wrapper_tag:"div")
+					td= auto_link(simple_format(h(@thread1.description), {}, santize: false, wrapper_tag:"div"))
 				tr
 					th= Thread1.human_attribute_name(:created_at)
 					td= @thread1.created_at
 				tr
 					th= Thread1.human_attribute_name(:updated_at)
 					td= @thread1.updated_at
-
-		= link_to '編集', edit_thread1_path, class: 'btn btn-primary mr-3'
-		= link_to '削除', @thread1, method: :delete, data: { confirm: "スレッド「#{@thread1.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
+		- if @thread1.user_id == current_user.id || current_user.admin == true
+			= link_to '編集', edit_thread1_path, class: 'btn btn-primary mr-3'
+			= link_to '削除', @thread1, method: :delete, data: { confirm: "スレッド「#{@thread1.name}」を削除します。よろしいですか？"}, class: 'btn btn-danger'
 
 		br
 		br
@@ -29,7 +32,7 @@
 		- @comments.each do |comment|
 			- if comment.reply_comment != nil 
 				p コメント先-----------
-				= @comments.find(comment.reply_comment).id
+				= @comments.find(comment.reply_comment).user.name
 				| &nbsp;
 				span )
 				| &nbsp;&nbsp;
@@ -39,14 +42,15 @@
 					.col-4
 						span - - >
 						| &nbsp;&nbsp;
-						= comment.id
+						= comment.user.name
 						| &nbsp;
 						span )
 						| &nbsp;&nbsp;
 						= comment.content
 						| &nbsp;&nbsp;
 						= comment.created_at
-					= link_to '削除', thread1_comment_path(thread1_id: @thread1, id: comment.id), method: :delete, data: { confirm: "コメントを削除します。よろしいですか？"}, class: 'btn btn-danger'
+					- if comment.user_id == current_user.id || current_user.admin == true
+						= link_to '削除', thread1_comment_path(thread1_id: @thread1, id: comment.id), method: :delete, data: { confirm: "コメントを削除します。よろしいですか？"}, class: 'btn btn-danger'
 					br
 				= form_with model: [@thread1, @comment], local: true do |f|
 					.form-group.row
@@ -58,14 +62,15 @@
 			- else
 				.row
 					.col-4
-						= comment.id
+						= comment.user.name
 						| &nbsp;
 						span )
 						| &nbsp;&nbsp;
 						= comment.content
 						| &nbsp;&nbsp;
 						= comment.created_at
-					= link_to '削除', thread1_comment_path(thread1_id: @thread1, id: comment.id), method: :delete, data: { confirm: "コメントを削除します。よろしいですか？"}, class: 'btn btn-danger'
+					- if comment.user_id == current_user.id || current_user.admin == true
+						= link_to '削除', thread1_comment_path(thread1_id: @thread1, id: comment.id), method: :delete, data: { confirm: "コメントを削除します。よろしいですか？"}, class: 'btn btn-danger'
 					br
 				= form_with model: [@thread1, @comment], local: true do |f|
 					.form-group.row
